@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2017, darkfriend <hi@darkfriend.ru>
- * @version 1.2.6
+ * @version 1.2.8
  * @global CUser $USER
  * @global CMain $APPLICATION
  */
@@ -59,38 +59,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["save"].$_REQUEST["apply"].
         dev2funModuleOpenGraphClass::getInstance()->setSettingsExcludePage($sFields);
     }
 
-    if(!empty($_REQUEST["ADDTAB_ELEMENT"])){
-        Option::set(dev2funModuleOpenGraphClass::$module_id,'ADDTAB_ELEMENT',$_REQUEST["ADDTAB_ELEMENT"]);
+	$enableTabElement = empty($_REQUEST["ADDTAB_ELEMENT"])?'N':$_REQUEST["ADDTAB_ELEMENT"];
+	Option::set(dev2funModuleOpenGraphClass::$module_id,'ADDTAB_ELEMENT',$enableTabElement);
+
+	$enableTabSection = empty($_REQUEST["ADDTAB_SECTION"])?'N':$_REQUEST["ADDTAB_SECTION"];
+	Option::set(dev2funModuleOpenGraphClass::$module_id,'ADDTAB_SECTION',$enableTabSection);
+
+    if(!empty($_POST["DEFAULT_IMAGE"])) {
+        $upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
+        $absPath = $_SERVER["DOCUMENT_ROOT"]."/".$upload_dir."/tmp";
+        if(!empty($_POST['DEFAULT_IMAGE']['tmp_name'])) {
+            $_POST['DEFAULT_IMAGE']['tmp_name'] = $absPath.$_POST['DEFAULT_IMAGE']['tmp_name'];
+        }
+        $fileID = \CFile::SaveFile($_POST['DEFAULT_IMAGE'],'dev2fun_opengraph', true);
+        if($fileID) {
+            Option::set(dev2funModuleOpenGraphClass::$module_id,'DEFAULT_IMAGE',$fileID);
+        }
     }
-
-    if(!empty($_REQUEST["ADDTAB_SECTION"])){
-        Option::set(dev2funModuleOpenGraphClass::$module_id,'ADDTAB_SECTION',$_REQUEST["ADDTAB_SECTION"]);
-    }
-
-	if(!empty($_POST["DEFAULT_IMAGE"]) && !is_numeric($_POST["DEFAULT_IMAGE"])) {
-		$newImage = $_POST['DEFAULT_IMAGE'];
-		$makeImage = \CFile::MakeFileArray($newImage['tmp_name']);
-		if(!$makeImage){
-			$makeImage = \CFile::MakeFileArray($_SERVER['DOCUMENT_ROOT'].'/upload/tmp'.$newImage['tmp_name']);
-		}
-		$newImage['tmp_name'] = $makeImage['tmp_name'];
-		$lastDefaultImage = Option::get(dev2funModuleOpenGraphClass::$module_id,'DEFAULT_IMAGE');
-		$fileID = \CFile::SaveFile($newImage,'dev2fun_opengraph', true);
-		if($fileID) {
-			Option::set(dev2funModuleOpenGraphClass::$module_id,'DEFAULT_IMAGE',$fileID);
-		}
-		if($lastDefaultImage) {
-			\CFile::Delete($lastDefaultImage);
-		}
-	}
-
-	if(!empty($_POST["DEFAULT_IMAGE_del"])) {
-		$imageDel = $_POST["DEFAULT_IMAGE_del"];
-		\CFile::Delete($imageDel);
-		Option::delete(dev2funModuleOpenGraphClass::$module_id,[
-			'name' => 'DEFAULT_IMAGE',
-		]);
-	}
 
     if(!empty($_POST['OG_SETTINGS_RESIZE'])) {
         $sResize = $_POST['OG_SETTINGS_RESIZE'];
