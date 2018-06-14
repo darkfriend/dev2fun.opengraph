@@ -1,8 +1,8 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2017, darkfriend <hi@darkfriend.ru>
- * @version 1.2.8
+ * @copyright (c) 2018, darkfriend <hi@darkfriend.ru>
+ * @version 1.2.9
  * @global CUser $USER
  * @global CMain $APPLICATION
  */
@@ -76,6 +76,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["save"].$_REQUEST["apply"].
             Option::set(dev2funModuleOpenGraphClass::$module_id,'DEFAULT_IMAGE',$fileID);
         }
     }
+	if(isset($_POST["DEFAULT_IMAGE_del"]) && !is_array($_POST["DEFAULT_IMAGE"])) {
+		\CFile::Delete($_POST["DEFAULT_IMAGE"]);
+		Option::set(dev2funModuleOpenGraphClass::$module_id,'DEFAULT_IMAGE','');
+	}
 
     if(!empty($_POST['OG_SETTINGS_RESIZE'])) {
         $sResize = $_POST['OG_SETTINGS_RESIZE'];
