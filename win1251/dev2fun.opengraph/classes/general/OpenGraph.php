@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2018, darkfriend <hi@darkfriend.ru>
- * @version 1.2.9
+ * @version 1.2.10
  */
 
 namespace Dev2fun\Module;
@@ -11,6 +11,8 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Dev2fun\OpenGraph\OpenGraphTable;
+
+IncludeModuleLangFile(__FILE__);
 
 class OpenGraph {
 
