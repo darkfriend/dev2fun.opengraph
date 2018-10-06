@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2017, darkfriend <hi@darkfriend.ru>
- * @version 1.1.0
+ * @version 1.2.11
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -188,14 +188,17 @@ class dev2funModuleOpenGraphClass {
         if(preg_match('#\/bitrix\/#',$curPage)) return;
         $obCache = new CPHPCache;
         $arSettings = self::getSettingFields();
+        $domain = $_SERVER['HTTP_HOST'];
+        if(!$domain) $domain = SITE_ID;
+        $cachePath = '/dev2fun.opengraph/'.$domain.'/';
         $cache_id = md5($APPLICATION->GetCurPage());
         foreach (GetModuleEvents(self::$module_id, "OnBeforeAddOpenGraph", true) as $arEvent)
-            ExecuteModuleEventEx($arEvent, array(&$arSettings,&$cache_id));
+            ExecuteModuleEventEx($arEvent, array(&$arSettings,&$cache_id,&$cachePath));
         if($arSettings) {
             $life_time = $arSettings['CACHE_TIME'];
         }
         $og = \Dev2fun\Module\OpenGraph::getInstance();
-        if($obCache->InitCache($life_time, $cache_id)){
+        if($obCache->InitCache($life_time, $cache_id, $cachePath)){
             $arData = $obCache->GetVars();
         } elseif($obCache->StartDataCache()) {
             $oModule = self::getInstance();
@@ -206,14 +209,14 @@ class dev2funModuleOpenGraphClass {
                 $obCache->EndDataCache(0);
                 return;
             }
-			if($arExcluded) {
-				foreach($arExcluded as $exc){
-					if(preg_match($exc,$curPage)){
-						$obCache->EndDataCache(0);
-						return;
-					}
-				}
-			}
+            if($arExcluded) {
+              foreach($arExcluded as $exc){
+                if(preg_match($exc,$curPage)){
+                  $obCache->EndDataCache(0);
+                  return;
+                }
+              }
+            }
 
             $og->ogFields = self::getFields(true);
             foreach ($og->ogFields as $reqItem) {
