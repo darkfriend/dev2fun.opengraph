@@ -1,4 +1,8 @@
 <?
+/**
+ * @author darkfriend <hi@darkfriend.ru>
+ * @version 1.3.0
+ */
 $MESS["SEC_MAIN_TAB"] = "Настройки OpenGraph";
 $MESS["SEC_MAIN_TAB_TITLE"] = "Настройки OpenGraph";
 $MESS['SEC_BACKUP_TITLE'] = "Модуль бекапа файлов";
@@ -11,6 +15,11 @@ $MESS['SUCCESS_SAVE_MESSAGE'] = "Настройки успешно сохран�
 $MESS['LABEL_TITLE_OG_PAGE_EXCLUDED'] = "Страницы исключений";
 $MESS['LABEL_SETTING_ADD_TAB_ELEMENT'] = "Добавить OG в элементах";
 $MESS['LABEL_SETTING_ADD_TAB_SECTION'] = "Добавить OG в разделах";
+$MESS['LABEL_SETTING_ADD_REMOVE_INDEX'] = "Удалить index.php";
+$MESS['LABEL_SETTING_ADD_TITLE'] = "Авто-добавление в поле og:title";
+$MESS['LABEL_SETTING_ADD_DESCRIPTION'] = "Авто-добавление в поле og:description";
+$MESS['LABEL_SETTING_ADD_IMAGE'] = "Авто-добавление в поле og:image";
+
 $MESS['LABEL_SETTING_ADD_DEFAULT_IMAGE'] = "Картинка по умолчанию";
 $MESS['LABEL_SETTING_OG_RESIZE_ENABLE'] = "Включить авторесайз";
 $MESS['LABEL_SETTING_OG_RESIZE_WIDTH'] = "Ширина изображения";
@@ -18,6 +27,13 @@ $MESS['LABEL_SETTING_OG_RESIZE_HEIGHT'] = "Высота изображения";
 $MESS['LABEL_SETTING_OG_RESIZE_TYPE'] = "Вид ресайза";
 $MESS['LABEL_SETTING_OG_RESIZE_HEADING'] = "Автоматический ресайз og:image";
 $MESS['LABEL_SETTING_OG_SORTABLE'] = "Порядок присваивания значений";
+
+
+$MESS['LABEL_SETTING_OG_CACHE_HEADING'] = "Управление кэшированием";
+$MESS["D2F_OG_CACHE_CLEARED"] = "Кэш успешно очищен";
+
+$MESS['LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER'] = "OpenGraph доп. ключ";
+//$MESS['LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER_VALUE'] = "OpenGraph значение";
 
 $MESS['LABEL_SETTING_OG_BX_RESIZE_IMAGE_EXACT'] = "масштабирует в прямоугольник указаной шириной и высотой c сохранением пропорций, обрезая лишнее";
 $MESS['LABEL_SETTING_OG_BX_RESIZE_IMAGE_PROPORTIONAL'] = "масштабирует с сохранением пропорций, размер ограничивается указаной шириной и высотой";
@@ -65,5 +81,3 @@ EOT;
 $MESS['LABEL_TITLE_HELP_DONATE_FOLLOW'] = 'Следите за новостями';
 $MESS['SEC_DONATE_TAB'] = 'Поблагодарить';
 $MESS['SEC_DONATE_TAB_TITLE'] = 'Поблагодарить за модуль';
-
-?>
