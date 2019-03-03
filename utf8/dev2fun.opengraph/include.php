@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.0
+ * @version 1.3.3
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -289,7 +289,10 @@ class dev2funModuleOpenGraphClass
 
 			$additionalFields = self::getFieldsAdditional();
 			if($additionalFields) {
-				$og->ogFields = array_merge($og->ogFields,$additionalFields);
+				foreach ($additionalFields as $additionalField) {
+					$og->ogFields[] = $additionalField;
+				}
+//				$og->ogFields = array_merge($og->ogFields,$additionalFields);
 				//				foreach ($additionalFields as $additionalField) {
 				//					if(empty($additionalField['key'])||empty($additionalField['value']))
 				//						continue;
