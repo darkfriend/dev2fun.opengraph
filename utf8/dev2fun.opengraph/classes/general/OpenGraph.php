@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.0
+ * @version 1.3.4
  */
 
 namespace Dev2fun\Module;
@@ -191,10 +191,12 @@ class OpenGraph
 					if (is_numeric($file)) {
 						$reqFields['image'] = $file;
 					} else {
-						if (!file_exists($file['tmp_name'])) {
+						if(empty($file['tmp_name'])) {
+							$file = \CFile::MakeFileArray($file);
+						} elseif (!file_exists($file['tmp_name'])) {
 							$upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
 							$absPath = $_SERVER["DOCUMENT_ROOT"] . "/" . $upload_dir . "/tmp";
-							if (!empty($file['tmp_name']) && !strpos($file['tmp_name'],$absPath)) {
+							if (!empty($file['tmp_name']) && !strpos($file['tmp_name'], $absPath)) {
 								$file['tmp_name'] = $absPath . $file['tmp_name'];
 							}
 						}
@@ -263,7 +265,9 @@ class OpenGraph
 					if (is_numeric($file)) {
 						$reqFields['image'] = $file;
 					} else {
-						if (!file_exists($file['tmp_name'])) {
+						if(empty($file['tmp_name'])) {
+							$file = \CFile::MakeFileArray($file);
+						} elseif (!file_exists($file['tmp_name'])) {
 							$upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
 							$absPath = $_SERVER["DOCUMENT_ROOT"] . "/" . $upload_dir . "/tmp";
 							if (!empty($file['tmp_name']) && !strpos($file['tmp_name'],$absPath)) {
@@ -630,7 +634,8 @@ class OpenGraph
 					//                        print_pre('PropFields');
 					//                        break;
 					case 'og:description' :
-						$ogValue = $APPLICATION->GetProperty('description');
+						$ogValue = $APPLICATION->GetProperty('og:description');
+						if(!$ogValue) $ogValue = $APPLICATION->GetProperty('description');
 						break;
 					case 'og:image' :
 						if (!preg_match('#^(http|https)\:\\\\#', $ogValue)) {
@@ -677,7 +682,7 @@ class OpenGraph
 						$url = $oModule->getUrl($APPLICATION->GetCurPage());
 						$ogValue = $this->getPrepareUrl($url);
 						break;
-					case 'site_name' :
+					case 'og:site_name' :
 						$obSite = \CSite::GetByID(SITE_ID);
 						if ($arSite = $obSite->Fetch()) {
 							$ogValue = htmlentities($arSite['SITE_NAME']);
