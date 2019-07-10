@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.3
+ * @version 1.3.5
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -30,6 +30,7 @@ class dev2funModuleOpenGraphClass
 	const SETTINGS_EXCLUDED_NAME = 'dev2fun_og_excluded_page';
 	const SETTINGS_RESIZE_IMAGE_NAME = 'RESIZE_IMAGE';
 	const SETTINGS_SORTABLE_NAME = 'SORTABLE';
+	public $httpHost;
 
 	/**
 	 * Open Graph require params
@@ -375,11 +376,9 @@ class dev2funModuleOpenGraphClass
 	 * @return mixed
 	 */
 	public function getHost() {
-		$host = SITE_SERVER_NAME;
-		if (!$host) {
-			$host = $_SERVER['HTTP_HOST'];
-		}
-		return $host;
+		if(!$this->httpHost)
+			$this->httpHost = preg_replace('#(\:\d+)#','',$_SERVER['HTTP_HOST']);
+		return $this->httpHost;
 	}
 
 	/**
