@@ -1,7 +1,7 @@
 <?
 /**
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.3.0
+ * @version 1.3.7
  */
 $MESS["SEC_MAIN_TAB"] = "Настройки OpenGraph";
 $MESS["SEC_MAIN_TAB_TITLE"] = "Настройки OpenGraph";
@@ -13,12 +13,19 @@ $MESS['LABEL_TITLE_SETTINGS_FIELDS'] = "Настройки";
 $MESS['LABEL_CACHE_TIME_FIELDS'] = "Время жизни кэша (сек)";
 $MESS['SUCCESS_SAVE_MESSAGE'] = "Настройки успешно сохранены";
 $MESS['LABEL_TITLE_OG_PAGE_EXCLUDED'] = "Страницы исключений";
-$MESS['LABEL_SETTING_ADD_TAB_ELEMENT'] = "Добавить OG в элементах";
-$MESS['LABEL_SETTING_ADD_TAB_SECTION'] = "Добавить OG в разделах";
 $MESS['LABEL_SETTING_ADD_REMOVE_INDEX'] = "Удалить index.php";
-$MESS['LABEL_SETTING_ADD_TITLE'] = "Авто-добавление в поле og:title";
-$MESS['LABEL_SETTING_ADD_DESCRIPTION'] = "Авто-добавление в поле og:description";
-$MESS['LABEL_SETTING_ADD_IMAGE'] = "Авто-добавление в поле og:image";
+
+$MESS['LABEL_TITLE_OG_SETTINGS_ADMIN'] = "Настройки в админке";
+$MESS['LABEL_SETTING_ADD_TAB_ELEMENT'] = "Добавить таб в элементах (админка)";
+$MESS['LABEL_SETTING_ADD_TAB_SECTION'] = "Добавить таб в разделах (админка)";
+$MESS['LABEL_SETTING_ADD_TITLE'] = "Авто-заполнение поля og:title (админка)";
+$MESS['LABEL_SETTING_ADD_DESCRIPTION'] = "Авто-заполнение поля og:description (админка)";
+$MESS['LABEL_SETTING_ADD_IMAGE'] = "Авто-заполнение поля og:image (админка)";
+
+$MESS['LABEL_TITLE_OG_SETTINGS_SHOW'] = "Настройки вывода Open Graph полей";
+$MESS['LABEL_SETTING_SHOW_ELEMENTS'] = "Выводить OG в элементах";
+$MESS['LABEL_SETTING_SHOW_SECTIONS'] = "Выводить OG в разделах";
+$MESS['LABEL_SETTING_SHOW_PAGES'] = "Выводить OG на страницах";
 
 $MESS['LABEL_SETTING_ADD_DEFAULT_IMAGE'] = "Картинка по умолчанию";
 $MESS['LABEL_SETTING_OG_RESIZE_ENABLE'] = "Включить авторесайз";

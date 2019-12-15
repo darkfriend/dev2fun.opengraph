@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.6
+ * @version 1.3.7
  */
 
 namespace Dev2fun\Module;
@@ -16,7 +16,6 @@ IncludeModuleLangFile(__FILE__);
 
 class OpenGraph
 {
-
     public $lastError;
     private static $instance;
     private static $_type;
@@ -745,6 +744,11 @@ class OpenGraph
                             }
                         }
                         break;
+                    case 'og:image:secure_url' :
+                        if (!empty($ogData['image'])) {
+                            $ogValue = $ogData['image'];
+                        }
+                        break;
                     case 'og:type' :
                         $ogValue = 'website';
                         break;
@@ -894,9 +898,43 @@ class OpenGraph
         return empty($this->params[$key]) ? $default : $this->params[$key];
     }
 
+    /**
+     * Get option from params
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getOptionByParams($key, $default = '')
+    {
+        $options = $this->getOptionsByParams();
+        return empty($options[$key]) ? $default : $options[$key];
+    }
+
+    /**
+     * Get options from params
+     * @return array
+     */
+    public function getOptionsByParams()
+    {
+        return $this->getParam('options', []);
+    }
+
     public function getDefaultByField($fieldKey, $default = '')
     {
         $defaultFields = $this->getParam('default', []);
         return empty($defaultFields[$fieldKey]) ? $default : $defaultFields[$fieldKey];
+    }
+
+    /**
+     * @param array $fields
+     * @return array
+     */
+    public function prepareOpenGraphFields($fields)
+    {
+        if(in_array('og:image',$fields) && \CMain::IsHTTPS()) {
+            $fields[] = 'og:image:secure_url';
+        }
+
+        return $fields;
     }
 }

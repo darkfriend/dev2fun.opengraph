@@ -2,8 +2,8 @@
 /**
  * Install
  * @author dev2fun (darkfriend)
- * @copyright (c) 2017, darkfriend <hi@darkfriend.ru>
- * @version 1.1.0
+ * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
+ * @version 1.3.7
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -22,7 +22,7 @@ use Bitrix\Main\Localization\Loc,
     Dev2fun\OpenGraph\OpenGraphTable,
     Bitrix\Main\Config\Option;
 
-Class dev2fun_opengraph extends CModule
+class dev2fun_opengraph extends CModule
 {
     var $MODULE_ID = "dev2fun.opengraph";
     var $MODULE_VERSION;
@@ -78,6 +78,8 @@ Class dev2fun_opengraph extends CModule
             dev2funModuleOpenGraphClass::setFields(dev2funModuleOpenGraphClass::$arReqOG);
             Option::set($this->MODULE_ID,'ADDTAB_ELEMENT','Y');
             Option::set($this->MODULE_ID,'ADDTAB_SECTION','Y');
+            Option::set($this->MODULE_ID,'SHOW_IN_ELEMENTS','Y');
+            Option::set($this->MODULE_ID,'SHOW_IN_SECTIONS','Y');
         } catch (\Bitrix\Main\DB\SqlQueryException $e) {
             throw new Exception($e->getMessage());
         }
