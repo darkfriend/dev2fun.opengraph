@@ -651,7 +651,7 @@ class OpenGraph
                         if (!$ogValue) $ogValue = $APPLICATION->GetProperty('description');
                         break;
                     case 'og:image' :
-                        if (!preg_match('#^(http|https)\:\\\\#', $ogValue)) {
+                        if (!preg_match('#^(http|https)#', $ogValue)) {
                             $prefix = $oModule->getProtocol() . $oModule->getHost();
                             $ogValue = $prefix . $ogValue;
                         }
