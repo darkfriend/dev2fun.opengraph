@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.7
+ * @version 1.3.9
  */
 
 namespace Dev2fun\Module;
@@ -474,20 +474,20 @@ class OpenGraph
                 if (in_array($ogKey, $this->baseOpenGraphFields)) $ogKey = 'og:' . $ogKey;
                 if (empty($ogData[$ogKey]) && $this->checkOnProperty('og_fields', $ogKey)) {
                     switch ($ogKey) {
-                        case 'og:title' :
-                            if ($ogVal) {
-                                $ogVal = htmlentities($ogVal);
-                            }
-                            break;
-                        case 'og:description' :
-                            if ($ogVal) {
-                                $ogVal = trim(strip_tags(html_entity_decode($ogVal)));
-                                if (strlen($ogVal) > 160) {
-                                    $ogVal = substr($ogVal, 0, 160) . '...';
-                                }
-                                $ogVal = htmlentities($ogVal);
-                            }
-                            break;
+                        //                        case 'og:title' :
+                        //                            if ($ogVal) {
+                        //                                $ogVal = htmlentities($ogVal);
+                        //                            }
+                        //                            break;
+                        //                        case 'og:description' :
+                        //                            if ($ogVal) {
+                        //                                $ogVal = trim(strip_tags(html_entity_decode($ogVal)));
+                        //                                if (strlen($ogVal) > 160) {
+                        //                                    $ogVal = substr($ogVal, 0, 160) . '...';
+                        //                                }
+                        //                                $ogVal = htmlentities($ogVal);
+                        //                            }
+                        //                            break;
                         case 'og:image' :
                             if ($ogVal) {
                                 $ogVal = $this->getImagePath($ogVal);
@@ -544,25 +544,31 @@ class OpenGraph
                         case 'og:title' :
                             if (!empty($arElement['NAME'])) {
                                 $ogData[$reqKey] = $arElement['NAME'];
-                                $ogData[$reqKey] = htmlentities($ogData[$reqKey]);
+                                //                                $ogData[$reqKey] = htmlentities($ogData[$reqKey]);
                             }
                             break;
                         case 'og:description' :
                             if (!empty($arElement['DETAIL_TEXT'])) {
-                                $text = strip_tags($arElement['DETAIL_TEXT']);
-                                if (strlen($text) > 160) {
-                                    $text = substr($text, 0, 160) . '...';
-                                }
-                                $text = htmlentities($text);
-                                $ogData[$reqKey] = $text;
+                                $ogData[$reqKey] = $arElement['DETAIL_TEXT'];
                             } elseif (!empty($arElement['PREVIEW_TEXT'])) {
-                                $text = strip_tags($arElement['PREVIEW_TEXT']);
-                                if (strlen($text) > 160) {
-                                    $text = substr($text, 0, 160) . '...';
-                                }
-                                $text = htmlentities($text);
-                                $ogData[$reqKey] = $text;
+                                $ogData[$reqKey] = $arElement['PREVIEW_TEXT'];
                             }
+
+                            //                            if (!empty($arElement['DETAIL_TEXT'])) {
+                            //                                $text = strip_tags($arElement['DETAIL_TEXT']);
+                            //                                if (strlen($text) > 160) {
+                            //                                    $text = substr($text, 0, 160) . '...';
+                            //                                }
+                            //                                $text = htmlentities($text);
+                            //                                $ogData[$reqKey] = $text;
+                            //                            } elseif (!empty($arElement['PREVIEW_TEXT'])) {
+                            //                                $text = strip_tags($arElement['PREVIEW_TEXT']);
+                            //                                if (strlen($text) > 160) {
+                            //                                    $text = substr($text, 0, 160) . '...';
+                            //                                }
+                            //                                $text = htmlentities($text);
+                            //                                $ogData[$reqKey] = $text;
+                            //                            }
                             break;
                         case 'og:url' :
                             if (!empty($arElement['DETAIL_PAGE_URL'])) {
@@ -590,17 +596,18 @@ class OpenGraph
                         case 'og:title' :
                             if (!empty($arSection['NAME'])) {
                                 $ogData[$reqKey] = $arSection['NAME'];
-                                $ogData[$reqKey] = htmlentities($ogData[$reqKey]);
+                                //                                $ogData[$reqKey] = htmlentities($ogData[$reqKey]);
                             }
                             break;
                         case 'og:description' :
                             if (!empty($arSection['DESCRIPTION'])) {
-                                $text = strip_tags($arSection['DESCRIPTION']);
-                                if (strlen($text) > 160) {
-                                    $text = substr($text, 0, 160) . '...';
-                                }
-                                $text = htmlentities($text);
-                                $ogData[$reqKey] = $text;
+                                $ogData[$reqKey] = $arSection['DESCRIPTION'];
+                                //                                $text = strip_tags($arSection['DESCRIPTION']);
+                                //                                if (strlen($text) > 160) {
+                                //                                    $text = substr($text, 0, 160) . '...';
+                                //                                }
+                                //                                $text = htmlentities($text);
+                                //                                $ogData[$reqKey] = $text;
                             }
                             break;
                         case 'og:url' :
@@ -686,11 +693,11 @@ class OpenGraph
                 switch ($ogKey) {
                     case 'og:title' :
                         $ogValue = $APPLICATION->GetProperty('title');
-                        $ogValue = htmlentities($ogValue);
+                        //                        $ogValue = htmlentities($ogValue);
                         break;
                     case 'og:description' :
                         $ogValue = $APPLICATION->GetProperty('description');
-                        $ogValue = htmlentities($ogValue);
+                        //                        $ogValue = htmlentities($ogValue);
                         break;
                     case 'og:url' :
                         $url = $oModule->getUrl($APPLICATION->GetCurPage());
@@ -699,7 +706,8 @@ class OpenGraph
                     case 'og:site_name' :
                         $obSite = \CSite::GetByID(SITE_ID);
                         if ($arSite = $obSite->Fetch()) {
-                            $ogValue = htmlentities($arSite['SITE_NAME']);
+                            $ogValue = $arSite['SITE_NAME'];
+                            //                            $ogValue = htmlentities($arSite['SITE_NAME']);
                         }
                         break;
                     case 'og:image' :
@@ -935,6 +943,62 @@ class OpenGraph
             $fields[] = 'og:image:secure_url';
         }
 
+        return $fields;
+    }
+
+    /**
+     * Возвращает обработанные поля
+     * @param string $key
+     * @param string $value
+     * @return string
+     */
+    public function prepareFieldsValue($key, $value)
+    {
+        switch ($key) {
+            case 'og:title' :
+                $value = htmlentities($value);
+                break;
+            case 'og:description' :
+                if(!$value) break;
+                $text = trim(strip_tags(html_entity_decode($value)));
+                if (strlen($text) > 160) {
+                    $text = substr($text, 0, 160) . '...';
+                }
+                $text = str_replace('  ','', $text);
+                $value = htmlentities($text);
+                break;
+            //            case 'og:url' :
+            //                $value = $this->getPrepareUrl($value);
+            //                break;
+            case 'og:site_name' :
+                $value = htmlentities($value);
+                break;
+            case 'og:image' :
+                //                $value = $this->getImagePath($value);
+                $oModule = \dev2funModuleOpenGraphClass::getInstance();
+                if (!preg_match('#^(http|https)#', $value)) {
+                    $prefix = $oModule->getProtocol() . $oModule->getHost();
+                    $value = $prefix . $value;
+                }
+                //                $value = $this->getImagePath($value);
+                break;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Возвращает обработанные поля
+     * @param $fields
+     * @return array
+     */
+    public function prepareFieldsValues($fields)
+    {
+        if(!$fields) return $fields;
+        foreach ($fields as $key=>&$field) {
+            $field = $this->prepareFieldsValue($key, $field);
+        }
+        unset($field);
         return $fields;
     }
 }

@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.7
+ * @version 1.3.9
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -48,7 +48,7 @@ class dev2funModuleOpenGraphClass
      * @var array
      */
     public static $arReqSettings = array(
-        'CACHE_TIME' => 3600
+        'CACHE_TIME' => 360000
     );
 
     /**
@@ -361,6 +361,9 @@ class dev2funModuleOpenGraphClass
                         break;
                 }
             }
+
+            $og->ogValues = $og->prepareFieldsValues($og->ogValues);
+
             foreach (GetModuleEvents(self::$module_id, "OnAfterAdd", true) as $arEvent)
                 ExecuteModuleEventEx($arEvent, array(&$og->ogValues));
             $arData = $og->ogValues;
