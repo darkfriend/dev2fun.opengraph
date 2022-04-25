@@ -1,19 +1,19 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.7
+ * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.1
  * @global CUser $USER
  * @global CMain $APPLICATION
  */
 
 define("ADMIN_MODULE_NAME", "dev2fun.opengraph");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
+CModule::IncludeModule("iblock");
 CModule::IncludeModule("dev2fun.opengraph");
 
 use \Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Config\Option;
-use Dev2fun\OpenGraph\OpenGraphTable;
 
 IncludeModuleLangFile($GLOBALS['reqPath']);
 
@@ -22,7 +22,7 @@ $canWrite = $USER->CanDoOperation('d2f_og_settings_write');
 if (!$canRead && !$canWrite) $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
 $EDITION_RIGHT = $APPLICATION->GetGroupRight(dev2funModuleOpenGraphClass::$module_id);
-if ($EDITION_RIGHT == "D") $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
+if ($EDITION_RIGHT === "D") $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
 $aTabs = [
     [
@@ -42,7 +42,7 @@ $aTabs = [
 $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
 $bVarsFromForm = false;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_REQUEST['CLEAR_CACHE']) && check_bitrix_sessid()) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_REQUEST['CLEAR_CACHE']) && check_bitrix_sessid()) {
     dev2funModuleOpenGraphClass::clearCache(true);
     LocalRedirect($APPLICATION->GetCurPageParam(
         'action=settings&cache_success=Y',
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_REQUEST['CLEAR_CACHE']) && 
     ));
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["save"] . $_REQUEST["apply"] . $_REQUEST["FIELDS"] != "" && $canWrite && check_bitrix_sessid()) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && $_REQUEST["save"] . $_REQUEST["apply"] . $_REQUEST["FIELDS"] != "" && $canWrite && check_bitrix_sessid()) {
     if (!empty($_REQUEST["FIELDS"]['og'])) {
         $ogFields = $_REQUEST["FIELDS"]['og'];
         $ogFields = array_unique($ogFields);
@@ -103,19 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["save"] . $_REQUEST["apply
     }
 
     if (!empty($_POST["DEFAULT_IMAGE"])) {
-        if (is_numeric($_POST["DEFAULT_IMAGE"])) {
-            $_POST['DEFAULT_IMAGE'] = \CFile::MakeFileArray($_POST['DEFAULT_IMAGE']);
-        } else {
-            if (empty($_POST['DEFAULT_IMAGE']['tmp_name'])) {
-                $_POST['DEFAULT_IMAGE'] = \CFile::MakeFileArray($_POST['DEFAULT_IMAGE']);
-            } elseif (!file_exists($_POST['DEFAULT_IMAGE']['tmp_name'])) {
-                $upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
-                $absPath = $_SERVER["DOCUMENT_ROOT"] . "/" . trim($upload_dir, '/') . "/tmp";
-                if (!strpos($_POST['DEFAULT_IMAGE']['tmp_name'], $absPath)) {
-                    $_POST['DEFAULT_IMAGE']['tmp_name'] = $absPath . $_POST['DEFAULT_IMAGE']['tmp_name'];
-                }
-            }
-        }
+        $_POST['DEFAULT_IMAGE'] = \CIBlock::makeFileArray($_POST['DEFAULT_IMAGE']);
         $fileID = \CFile::SaveFile($_POST['DEFAULT_IMAGE'], 'dev2fun_opengraph', true);
         if ($fileID) {
             Option::set(dev2funModuleOpenGraphClass::$module_id, 'DEFAULT_IMAGE', $fileID);
@@ -127,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["save"] . $_REQUEST["apply
         if (empty($sResize['TYPE'])) {
             $sResize['TYPE'] = BX_RESIZE_IMAGE_PROPORTIONAL;
         }
-        if ($sResize['ENABLE'] != 'Y') {
+        if ($sResize['ENABLE'] !== 'Y') {
             $sResize['ENABLE'] = 'N';
         }
         Option::set(dev2funModuleOpenGraphClass::$module_id, 'RESIZE_IMAGE', serialize($sResize));
@@ -156,28 +144,28 @@ $settingFields = dev2funModuleOpenGraphClass::getSettingFields();
 $excludedPages = dev2funModuleOpenGraphClass::getInstance()->getSettingsExcludePage();
 
 $enableTabElement = Option::get(dev2funModuleOpenGraphClass::$module_id, 'ADDTAB_ELEMENT', 'N');
-if ($enableTabElement != 'Y') $enableTabElement = false;
+if ($enableTabElement !== 'Y') $enableTabElement = false;
 
 $enableTabSection = Option::get(dev2funModuleOpenGraphClass::$module_id, 'ADDTAB_SECTION', 'N');
-if ($enableTabSection != 'Y') $enableTabSection = false;
+if ($enableTabSection !== 'Y') $enableTabSection = false;
 
 $removeIndex = Option::get(dev2funModuleOpenGraphClass::$module_id, 'REMOVE_INDEX', 'N');
-if ($removeIndex != 'Y') $removeIndex = false;
+if ($removeIndex !== 'Y') $removeIndex = false;
 
 $showElements = Option::get(dev2funModuleOpenGraphClass::$module_id, 'SHOW_IN_ELEMENTS', 'N');
-if ($showElements != 'Y') $showElements = false;
+if ($showElements !== 'Y') $showElements = false;
 
 $showSections = Option::get(dev2funModuleOpenGraphClass::$module_id, 'SHOW_IN_SECTIONS', 'N');
 if ($showSections != 'Y') $showSections = false;
 
 $enableAutoAddTitle = Option::get(dev2funModuleOpenGraphClass::$module_id, 'AUTO_ADD_TITLE', 'N');
-if ($enableAutoAddTitle != 'Y') $enableAutoAddTitle = false;
+if ($enableAutoAddTitle !== 'Y') $enableAutoAddTitle = false;
 
 $enableAutoAddDescription = Option::get(dev2funModuleOpenGraphClass::$module_id, 'AUTO_ADD_DESCRIPTION', 'N');
-if ($enableAutoAddDescription != 'Y') $enableAutoAddDescription = false;
+if ($enableAutoAddDescription !== 'Y') $enableAutoAddDescription = false;
 
 $enableAutoAddImage = Option::get(dev2funModuleOpenGraphClass::$module_id, 'AUTO_ADD_IMAGE', 'N');
-if ($enableAutoAddImage != 'Y') $enableAutoAddImage = false;
+if ($enableAutoAddImage !== 'Y') $enableAutoAddImage = false;
 
 $defaultImage = Option::get(dev2funModuleOpenGraphClass::$module_id, 'DEFAULT_IMAGE', 0);
 
@@ -215,7 +203,7 @@ $assets = \Bitrix\Main\Page\Asset::getInstance();
 $assets->addJs('/bitrix/js/' . dev2funModuleOpenGraphClass::$module_id . '/Sortable.min.js');
 $assets->addJs('/bitrix/js/' . dev2funModuleOpenGraphClass::$module_id . '/script.js');
 
-if (!empty($_REQUEST['status']) && $_REQUEST['status'] == 'success') {
+if (!empty($_REQUEST['status']) && $_REQUEST['status'] === 'success') {
     \CAdminMessage::showMessage([
         'TYPE' => 'OK',
         'MESSAGE' => GetMessage("SUCCESS_SAVE_MESSAGE"),
@@ -257,7 +245,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                             <table class="nopadding" cellpadding="0" cellspacing="0" border="0" width="100%"
                                    id="d2f_fields_og">
                                 <tbody>
-                                <? foreach ($ogFields as $key => $field):
+                                <?php foreach ($ogFields as $key => $field):
                                     $key = str_replace('n', '', $key);
                                     ?>
                                     <tr>
@@ -267,7 +255,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                                    type="text"><br>
                                         </td>
                                     </tr>
-                                <? endforeach; ?>
+                                <?php endforeach; ?>
                                 <tr>
                                     <td>
                                         <label>og:</label>
@@ -303,7 +291,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                             <table class="nopadding" cellpadding="0" cellspacing="0" border="0" width="100%"
                                    id="d2f_fields_additional">
                                 <tbody>
-                                <? foreach ($ogFieldsAdditional as $key => $field):
+                                <?php foreach ($ogFieldsAdditional as $key => $field):
                                     $key = str_replace('n', '', $key);
                                     ?>
                                     <tr>
@@ -313,8 +301,8 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                                    placeholder="<?= Loc::getMessage("LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER"); ?>">
                                         </td>
                                     </tr>
-                                <? endforeach; ?>
-                                <? //$cntFieldsAdditional = count($ogFieldsAdditional); ?>
+                                <?php endforeach; ?>
+                                <?php //$cntFieldsAdditional = count($ogFieldsAdditional); ?>
                                 <tr>
                                     <td>
                                         <input name="FIELDS_ADDIT[n<?= count($ogFieldsAdditional) ?>]" value=""
@@ -323,8 +311,8 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     </td>
                                     <!--									<td>-->
                                     <!--										<input name="FIELDS_ADDIT[n-->
-                                    <? //=$cntFieldsAdditional?><!--][value]" value="" size="100" type="text" placeholder="-->
-                                    <? //=Loc::getMessage("LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER_VALUE");?><!--">-->
+                                    <?php //=$cntFieldsAdditional?><!--][value]" value="" size="100" type="text" placeholder="-->
+                                    <?php //=Loc::getMessage("LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER_VALUE");?><!--">-->
                                     <!--									</td>-->
                                 </tr>
                                 <tr>
@@ -350,7 +338,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                     <tr>
                         <td></td>
                         <td>
-                            <?
+                            <?php
                             echo BeginNote();
                             echo Loc::getMessage('LABEL_TITLE_OG_FIELDS_TEXT');
                             EndNote();
@@ -366,7 +354,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                             <table class="nopadding" cellpadding="0" cellspacing="0" border="0" width="100%"
                                    id="d2f_page_excluded_og">
                                 <tbody>
-                                <? foreach ($excludedPages as $key => $page):
+                                <?php foreach ($excludedPages as $key => $page):
                                     $key = str_replace('n', '', $key);
                                     ?>
                                     <tr>
@@ -376,7 +364,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                                    type="text">
                                         </td>
                                     </tr>
-                                <? endforeach; ?>
+                                <?php endforeach; ?>
                                 <tr>
                                     <td>
                                         <label><?= $serverUrl ?></label>
@@ -407,7 +395,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                     <tr>
                         <td></td>
                         <td>
-                            <?
+                            <?php
                             echo BeginNote();
                             echo Loc::getMessage('LABEL_TITLE_OG_PAGE_EXCLUDED_TEXT');
                             EndNote();
@@ -447,14 +435,14 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                             for="AUTO_ADD_DESCRIPTION"><?= Loc::getMessage('LABEL_SETTING_ADD_DESCRIPTION') ?></label>
                                     </td>
                                 </tr>
-                                <? if (in_array('image', $ogFields)) { ?>
+                                <?php if (in_array('image', $ogFields)) { ?>
                                     <tr>
                                         <td>
                                             <label
                                                 for="AUTO_ADD_IMAGE"><?= Loc::getMessage('LABEL_SETTING_ADD_IMAGE') ?></label>
                                         </td>
                                     </tr>
-                                <? } ?>
+                                <?php } ?>
                                 </tbody>
                             </table>
                         </td>
@@ -485,14 +473,14 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                                value="Y" <?= $enableAutoAddDescription ? 'checked="checked"' : '' ?>>
                                     </td>
                                 </tr>
-                                <? if (in_array('image', $ogFields)) { ?>
+                                <?php if (in_array('image', $ogFields)) { ?>
                                     <tr>
                                         <td>
                                             <input type="checkbox" id="AUTO_ADD_IMAGE" name="AUTO_ADD_IMAGE"
                                                    value="Y" <?= $enableAutoAddImage ? 'checked="checked"' : '' ?>>
                                         </td>
                                     </tr>
-                                <? } ?>
+                                <?php } ?>
 
                                 </tbody>
                             </table>
@@ -605,7 +593,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                         <br>
                                         <?= BeginNote(); ?>
                                         <?= Loc::getMessage('LABEL_SETTING_OG_SORTABLE_ATTENTION') ?>
-                                        <? EndNote(); ?>
+                                        <?php EndNote(); ?>
                                         <script type="text/javascript">
                                             initSortable('sort_items');
                                         </script>
@@ -623,7 +611,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                 for="ADDTAB_ELEMENT"><?= Loc::getMessage('LABEL_SETTING_ADD_DEFAULT_IMAGE') ?></label>
                         </td>
                         <td width="60%" class="adm-detail-content-cell-r" colspan="">
-                            <? if (class_exists('\Bitrix\Main\UI\FileInput', true)) {
+                            <?php if (class_exists('\Bitrix\Main\UI\FileInput', true)) {
                                 echo \Bitrix\Main\UI\FileInput::createInstance([
                                     "name" => "DEFAULT_IMAGE",
                                     "description" => true,
@@ -746,23 +734,22 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <? //var_dump($arSettingResize['TYPE']) ?>
                                         <label>
                                             <input type="radio" name="OG_SETTINGS_RESIZE[TYPE]"
                                                    value="<?= BX_RESIZE_IMAGE_EXACT ?>"
-                                                   <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_EXACT) ? 'checked' : '' ?>>
+                                                <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_EXACT) ? 'checked' : '' ?>>
                                             <?= Loc::getMessage('LABEL_SETTING_OG_BX_RESIZE_IMAGE_EXACT') ?>
                                         </label><br>
                                         <label>
                                             <input type="radio" name="OG_SETTINGS_RESIZE[TYPE]"
                                                    value="<?= BX_RESIZE_IMAGE_PROPORTIONAL ?>"
-                                                   <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_PROPORTIONAL) ? 'checked' : '' ?>>
+                                                <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_PROPORTIONAL) ? 'checked' : '' ?>>
                                             <?= Loc::getMessage('LABEL_SETTING_OG_BX_RESIZE_IMAGE_PROPORTIONAL') ?>
                                         </label><br>
                                         <label>
                                             <input type="radio" name="OG_SETTINGS_RESIZE[TYPE]"
                                                    value="<?= BX_RESIZE_IMAGE_PROPORTIONAL_ALT ?>"
-                                                   <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_PROPORTIONAL_ALT) ? 'checked' : '' ?>>
+                                                <?= ($arSettingResize['TYPE'] == BX_RESIZE_IMAGE_PROPORTIONAL_ALT) ? 'checked' : '' ?>>
                                             <?= Loc::getMessage('LABEL_SETTING_OG_BX_RESIZE_IMAGE_PROPORTIONAL_ALT') ?>
                                         </label>
                                     </td>
@@ -814,7 +801,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                 </table>
             </td>
         </tr>
-        <? $tabControl->BeginNextTab(); ?>
+        <?php $tabControl->BeginNextTab(); ?>
         <tr>
             <td colspan="2" align="left">
                 <div class="o-container--super">
@@ -936,17 +923,17 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                 </div>
             </td>
         </tr>
-        <?
+        <?php
         $tabControl->Buttons(
             [
                 "disabled" => (!$canWrite),
             ]
         );
         ?>
-        <?
+        <?php
         $tabControl->End();
         ?>
     </form>
-<?
+<?php
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
 ?>

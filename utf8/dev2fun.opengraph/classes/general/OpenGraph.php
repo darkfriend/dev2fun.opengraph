@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
- * @version 1.4.0
+ * @version 1.4.1
  */
 
 namespace Dev2fun\Module;
@@ -987,8 +987,8 @@ class OpenGraph
             case 'og:description':
                 if(!$value) break;
                 $text = trim(strip_tags(html_entity_decode($value)));
-                if (strlen($text) > 160) {
-                    $text = substr($text, 0, 160) . '...';
+                if (mb_strlen($text) > 160) {
+                    $text = mb_substr($text, 0, 160) . '...';
                 }
                 $text = str_replace('  ','', $text);
                 $value = htmlentities($text);
