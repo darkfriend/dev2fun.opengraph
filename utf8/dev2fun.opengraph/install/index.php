@@ -2,18 +2,18 @@
 /**
  * Install
  * @author dev2fun (darkfriend)
- * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.7
+ * @copyright (c) 2022, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.0
  */
 IncludeModuleLangFile(__FILE__);
 
 \Bitrix\Main\Loader::registerAutoLoadClasses(
     "dev2fun.opengraph",
-    array(
+    [
         'Dev2fun\\OpenGraph\\OpenGraphTable' => 'classes/general/OpenGraphTable.php',
         'Dev2fun\\Module\\OpenGraph' => 'classes/general/OpenGraph.php',
         'dev2funModuleOpenGraphClass' => 'include.php',
-    )
+    ]
 );
 
 if(class_exists("dev2fun_opengraph")) return;
@@ -31,7 +31,7 @@ class dev2fun_opengraph extends CModule
     var $MODULE_DESCRIPTION;
     var $MODULE_GROUP_RIGHTS = "Y";
 
-    function dev2fun_opengraph(){
+    public function __construct(){
         $path = str_replace("\\", "/", __FILE__);
         $path = substr($path, 0, strlen($path) - strlen("/index.php"));
         include($path."/version.php");
@@ -50,7 +50,9 @@ class dev2fun_opengraph extends CModule
 
     function DoInstall(){
         global $APPLICATION;
-        if(!check_bitrix_sessid()) return;
+        if(!check_bitrix_sessid()) {
+            return false;
+        }
         try {
             $this->installFiles();
             $this->installDB();

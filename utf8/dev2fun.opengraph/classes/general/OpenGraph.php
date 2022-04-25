@@ -1,13 +1,14 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2019, darkfriend <hi@darkfriend.ru>
- * @version 1.3.9
+ * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.0
  */
 
 namespace Dev2fun\Module;
 
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Dev2fun\OpenGraph\OpenGraphTable;
@@ -57,13 +58,11 @@ class OpenGraph
             case (preg_match('#(iblock_element_edit)#', $curPath) == 1) :
                 $enableTabElement = Option::get(\dev2funModuleOpenGraphClass::$module_id, 'ADDTAB_ELEMENT', 'N');
                 self::$_type = 'element';
-                return ($enableTabElement == 'Y');
-                break;
+                return ($enableTabElement === 'Y');
             case (preg_match('#(iblock_section_edit)#', $curPath) == 1) :
                 $enableTabSection = Option::get(\dev2funModuleOpenGraphClass::$module_id, 'ADDTAB_SECTION', 'N');
                 self::$_type = 'section';
-                return ($enableTabSection == 'Y');
-                break;
+                return ($enableTabSection === 'Y');
         }
         return false;
     }
@@ -115,7 +114,7 @@ class OpenGraph
                 isset($reqFields['title'])
                 && empty($reqFields['title'])
                 && !empty($arFields['NAME'])
-                && (!empty($arSettings['AUTO_ADD_TITLE']) && $arSettings['AUTO_ADD_TITLE'] == 'Y')
+                && (!empty($arSettings['AUTO_ADD_TITLE']) && $arSettings['AUTO_ADD_TITLE'] === 'Y')
             ) {
                 $reqFields['title'] = $arFields['NAME'];
             }
@@ -123,14 +122,14 @@ class OpenGraph
                 isset($reqFields['description'])
                 && empty($reqFields['description'])
                 && !empty($arFields['PREVIEW_TEXT'])
-                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] == 'Y')
+                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] === 'Y')
             ) {
                 $reqFields['description'] = strip_tags($arFields['PREVIEW_TEXT']);
             } elseif (
                 isset($reqFields['description'])
                 && empty($reqFields['description'])
                 && !empty($arFields['DETAIL_TEXT'])
-                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] == 'Y')
+                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] === 'Y')
             ) {
                 $reqFields['description'] = strip_tags($arFields['DETAIL_TEXT']);
             }
@@ -143,7 +142,7 @@ class OpenGraph
                 $file = [];
                 if (!empty($_POST['OG_IMAGE'])) {
                     $file = $_POST['OG_IMAGE'];
-                    if (!empty($_POST['OG_IMAGE_del']) && $_POST['OG_IMAGE_del'] == 'Y') {
+                    if (!empty($_POST['OG_IMAGE_del']) && $_POST['OG_IMAGE_del'] === 'Y') {
                         OpenGraph::getInstance()->deleteImage($file);
                         $file = 0;
                         $reqFields['image'] = '';
@@ -157,7 +156,7 @@ class OpenGraph
                     //                    if($fileID) $reqFields['image'] = $fileID;
                 } elseif (
                     !empty($arFields['PREVIEW_PICTURE_ID'])
-                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] == 'Y')
+                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] === 'Y')
                 ) {
                     $file = $arFields['PREVIEW_PICTURE_ID'];
                     if (is_numeric($file)) {
@@ -165,7 +164,7 @@ class OpenGraph
                     }
                 } elseif (
                     !empty($_POST['PREVIEW_PICTURE'])
-                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] == 'Y')
+                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] === 'Y')
                 ) {
                     $file = $_POST['PREVIEW_PICTURE'];
                     if (is_numeric($file)) {
@@ -173,7 +172,7 @@ class OpenGraph
                     }
                 } elseif (
                     !empty($arFields['DETAIL_PICTURE_ID'])
-                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] == 'Y')
+                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] === 'Y')
                 ) {
                     $file = $arFields['DETAIL_PICTURE_ID'];
                     if (is_numeric($file)) {
@@ -181,7 +180,7 @@ class OpenGraph
                     }
                 } elseif (
                     !empty($_POST['DETAIL_PICTURE'])
-                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] == 'Y')
+                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] === 'Y')
                 ) {
                     $file = $_POST['DETAIL_PICTURE'];
                     if (is_numeric($file)) {
@@ -233,7 +232,7 @@ class OpenGraph
                 isset($reqFields['title'])
                 && empty($reqFields['title'])
                 && !empty($arFields['NAME'])
-                && (!empty($arSettings['AUTO_ADD_TITLE']) && $arSettings['AUTO_ADD_TITLE'] == 'Y')
+                && (!empty($arSettings['AUTO_ADD_TITLE']) && $arSettings['AUTO_ADD_TITLE'] === 'Y')
             ) {
                 $reqFields['title'] = $arFields['NAME'];
             }
@@ -241,7 +240,7 @@ class OpenGraph
                 isset($reqFields['description'])
                 && empty($reqFields['description'])
                 && !empty($arFields['DESCRIPTION'])
-                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] == 'Y')
+                && (!empty($arSettings['AUTO_ADD_DESCRIPTION']) && $arSettings['AUTO_ADD_DESCRIPTION'] === 'Y')
             ) {
                 $reqFields['description'] = strip_tags($arFields['DESCRIPTION']);
                 $reqFields['description'] = preg_replace("#('|\"|\r?\n)#", ' ', $reqFields['description']);
@@ -251,14 +250,14 @@ class OpenGraph
                 $file = [];
                 if (!empty($_POST['OG_IMAGE'])) {
                     $file = $_POST['OG_IMAGE'];
-                    if (!empty($_POST['OG_IMAGE_del']) && $_POST['OG_IMAGE_del'] == 'Y') {
+                    if (!empty($_POST['OG_IMAGE_del']) && $_POST['OG_IMAGE_del'] === 'Y') {
                         OpenGraph::getInstance()->deleteImage($file);
                         $file = 0;
                         $reqFields['image'] = '';
                     }
                 } elseif (
                     !empty($_POST['PICTURE'])
-                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] == 'Y')
+                    && (!empty($arSettings['AUTO_ADD_IMAGE']) && $arSettings['AUTO_ADD_IMAGE'] === 'Y')
                 ) {
                     $file = $_POST['PICTURE'];
                     if (is_numeric($file)) {
@@ -306,7 +305,7 @@ class OpenGraph
         ]]);
         if ($arRows) {
             foreach ($arRows as $arRow) {
-                if ($arRow['META_KEY'] == 'image' && empty($fields['image'])) {
+                if ($arRow['META_KEY'] === 'image' && empty($fields['image'])) {
                     $fields['image'] = $arRow['META_VAL'];
                 }
                 OpenGraphTable::delete($arRow['ID']);
@@ -430,11 +429,11 @@ class OpenGraph
      * @param int $imageId
      * @return string
      */
-    public function getImagePath($imageId)
+    public function getImagePathById($imageId)
     {
         $settingsResize = \dev2funModuleOpenGraphClass::getInstance()->getSettingsResize();
         $imagePath = '';
-        if ($settingsResize['ENABLE'] == 'Y' && (!empty($settingsResize['WIDTH']) || !empty($settingsResize['HEIGHT']))) {
+        if ($settingsResize['ENABLE'] === 'Y' && (!empty($settingsResize['WIDTH']) || !empty($settingsResize['HEIGHT']))) {
             if (empty($settingsResize['TYPE'])) $settingsResize['TYPE'] = BX_RESIZE_IMAGE_PROPORTIONAL;
             $arImage = \CFile::ResizeImageGet($imageId, [
                 'width' => (!empty($settingsResize['WIDTH']) ? $settingsResize['WIDTH'] : 99999),
@@ -490,7 +489,7 @@ class OpenGraph
                         //                            break;
                         case 'og:image' :
                             if ($ogVal) {
-                                $ogVal = $this->getImagePath($ogVal);
+                                $ogVal = $this->getImagePathById($ogVal);
                             }
                             break;
                     }
@@ -533,7 +532,7 @@ class OpenGraph
         }
         if (!$ogReqData) return $ogData;
         $oModule = \dev2funModuleOpenGraphClass::getInstance();
-        if ($type == 'element') {
+        if ($type === 'element') {
             $arElement = \CIBlockElement::GetByID($refId)->GetNext();
             if ($arElement) {
                 foreach ($ogReqData as $reqKey) {
@@ -577,15 +576,15 @@ class OpenGraph
                             break;
                         case 'og:image' :
                             if (!empty($arElement['DETAIL_PICTURE'])) {
-                                $ogData[$reqKey] = $this->getImagePath($arElement['DETAIL_PICTURE']);
+                                $ogData[$reqKey] = $this->getImagePathById($arElement['DETAIL_PICTURE']);
                             } elseif (!empty($arElement['PREVIEW_PICTURE'])) {
-                                $ogData[$reqKey] = $this->getImagePath($arElement['PREVIEW_PICTURE']);
+                                $ogData[$reqKey] = $this->getImagePathById($arElement['PREVIEW_PICTURE']);
                             }
                             break;
                     }
                 }
             }
-        } elseif ($type == 'section') {
+        } elseif ($type === 'section') {
             $arSection = \CIBlockSection::GetByID($refId)->GetNext();
             if ($arSection) {
                 foreach ($ogReqData as $reqKey) {
@@ -617,9 +616,9 @@ class OpenGraph
                             break;
                         case 'og:image' :
                             if (!empty($arSection['DETAIL_PICTURE'])) {
-                                $ogData[$reqKey] = $this->getImagePath($arSection['DETAIL_PICTURE']);
+                                $ogData[$reqKey] = $this->getImagePathById($arSection['DETAIL_PICTURE']);
                             } elseif (!empty($arSection['PICTURE'])) {
-                                $ogData[$reqKey] = $this->getImagePath($arSection['PICTURE']);
+                                $ogData[$reqKey] = $this->getImagePathById($arSection['PICTURE']);
                             }
                             break;
                     }
@@ -684,45 +683,55 @@ class OpenGraph
                 $ogReqData[] = $reqKey;
             }
         }
-        if (!$ogReqData) return $ogData;
+        if (!$ogReqData) {
+            return $ogData;
+        }
+
+        $pageGraph = new PageGraph();
+        $pageDataGraph = $pageGraph->getPageData();
         $oModule = \dev2funModuleOpenGraphClass::getInstance();
+
         foreach ($ogReqData as $ogKey) {
-            if (empty($ogData[$ogKey]) && $this->checkOnProperty('default', $ogKey))
-            {
+            if (empty($ogData[$ogKey]) && $this->checkOnProperty('default', $ogKey)) {
                 $ogValue = '';
                 switch ($ogKey) {
-                    case 'og:title' :
+                    case 'og:title':
                         $ogValue = $APPLICATION->GetProperty('title');
-                        //                        $ogValue = htmlentities($ogValue);
+                        if (!$ogValue) {
+                            $ogValue = $APPLICATION->GetTitle();
+                        }
                         break;
-                    case 'og:description' :
+                    case 'og:description':
                         $ogValue = $APPLICATION->GetProperty('description');
-                        //                        $ogValue = htmlentities($ogValue);
                         break;
-                    case 'og:url' :
+                    case 'og:url':
                         $url = $oModule->getUrl($APPLICATION->GetCurPage());
                         $ogValue = $this->getPrepareUrl($url);
                         break;
-                    case 'og:site_name' :
-                        $obSite = \CSite::GetByID(SITE_ID);
+                    case 'og:site_name':
+                        $obSite = \CSite::GetByID(
+                            Context::getCurrent()->getSite()
+                        );
                         if ($arSite = $obSite->Fetch()) {
                             $ogValue = $arSite['SITE_NAME'];
-                            //                            $ogValue = htmlentities($arSite['SITE_NAME']);
                         }
                         break;
-                    case 'og:image' :
-                        $img = Option::get(\dev2funModuleOpenGraphClass::$module_id, 'DEFAULT_IMAGE');
+                    case 'og:image':
+                        $img = $pageDataGraph->getPictureId();
+                        if (!$img) {
+                            $img = Option::get(\dev2funModuleOpenGraphClass::$module_id, 'DEFAULT_IMAGE');
+                        }
                         if ($img) {
-                            $ogValue = $this->getImagePath($img);
+                            $ogValue = $this->getImagePathById($img);
                             if (!$ogValue) {
                                 Option::set(\dev2funModuleOpenGraphClass::$module_id, 'DEFAULT_IMAGE', '');
                             }
                         }
                         break;
-                    case 'og:image:type' :
-                        if (key_exists('image', $ogData)) {
+                    case 'og:image:type':
+                        if (array_key_exists('og:image', $ogData)) {
                             if (!isset($imgsize)) {
-                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['image']);
+                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['og:image']);
                                 $imgsize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file);
                             }
                             if (!empty($imgsize['mime'])) {
@@ -730,10 +739,10 @@ class OpenGraph
                             }
                         }
                         break;
-                    case 'og:image:width' :
-                        if (key_exists('image', $ogData)) {
+                    case 'og:image:width':
+                        if (array_key_exists('og:image', $ogData)) {
                             if (!isset($imgsize)) {
-                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['image']);
+                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['og:image']);
                                 $imgsize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file);
                             }
                             if (!empty($imgsize[0])) {
@@ -741,10 +750,10 @@ class OpenGraph
                             }
                         }
                         break;
-                    case 'og:image:height' :
-                        if (key_exists('image', $ogData)) {
+                    case 'og:image:height':
+                        if (array_key_exists('og:image', $ogData)) {
                             if (!isset($imgsize)) {
-                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['image']);
+                                $file = str_replace($oModule->getProtocol() . $oModule->getHost(), '', $ogData['og:image']);
                                 $imgsize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file);
                             }
                             if (!empty($imgsize[1])) {
@@ -752,16 +761,18 @@ class OpenGraph
                             }
                         }
                         break;
-                    case 'og:image:secure_url' :
+                    case 'og:image:secure_url':
                         if (!empty($ogData['image'])) {
                             $ogValue = $ogData['image'];
                         }
                         break;
-                    case 'og:type' :
+                    case 'og:type':
                         $ogValue = 'website';
                         break;
                 }
-                if ($ogValue) $ogData[$ogKey] = $ogValue;
+                if ($ogValue) {
+                    $ogData[$ogKey] = $ogValue;
+                }
             }
         }
         return $ogData;
@@ -788,14 +799,19 @@ class OpenGraph
     /**
      * Add meta tags in header
      * @param array $arStr
+     * @return void
      */
     public function addHeader($arStr)
     {
-        if (!$arStr) return;
+        if (!$arStr) {
+            return;
+        }
         $asset = \Bitrix\Main\Page\Asset::getInstance();
         $asset->addString('<!-- dev2fun module opengraph -->', true);
         foreach ($arStr as $str) {
-            if (empty($str)) continue;
+            if (empty($str)) {
+                continue;
+            }
             $asset->addString($str, true);
         }
         $asset->addString('<!-- /dev2fun module opengraph -->', true);
@@ -873,7 +889,7 @@ class OpenGraph
     {
         if (!$url) return $url;
         if (empty($this->settings['REMOVE_INDEX'])) return $url;
-        if ($this->settings['REMOVE_INDEX'] != 'Y') return $url;
+        if ($this->settings['REMOVE_INDEX'] !== 'Y') return $url;
         return preg_replace('#(index|index\.php|index\.html)$#i', '', $url);
     }
 
@@ -939,8 +955,13 @@ class OpenGraph
      */
     public function prepareOpenGraphFields($fields)
     {
-        if(in_array('og:image',$fields) && \CMain::IsHTTPS()) {
-            $fields[] = 'og:image:secure_url';
+        if(in_array('og:image',$fields)) {
+            if(\CMain::IsHTTPS()) {
+                $fields[] = 'og:image:secure_url';
+            }
+            $fields[] = 'og:image:type';
+            $fields[] = 'og:image:width';
+            $fields[] = 'og:image:height';
         }
 
         return $fields;
@@ -954,11 +975,16 @@ class OpenGraph
      */
     public function prepareFieldsValue($key, $value)
     {
+        if (empty($value)) {
+            return $value;
+        }
+
         switch ($key) {
-            case 'og:title' :
+            case 'og:title':
+            case 'og:site_name':
                 $value = htmlentities($value);
                 break;
-            case 'og:description' :
+            case 'og:description':
                 if(!$value) break;
                 $text = trim(strip_tags(html_entity_decode($value)));
                 if (strlen($text) > 160) {
@@ -967,20 +993,12 @@ class OpenGraph
                 $text = str_replace('  ','', $text);
                 $value = htmlentities($text);
                 break;
-            //            case 'og:url' :
-            //                $value = $this->getPrepareUrl($value);
-            //                break;
-            case 'og:site_name' :
-                $value = htmlentities($value);
-                break;
-            case 'og:image' :
-                //                $value = $this->getImagePath($value);
+            case 'og:image':
                 $oModule = \dev2funModuleOpenGraphClass::getInstance();
                 if (!preg_match('#^(http|https)#', $value)) {
                     $prefix = $oModule->getProtocol() . $oModule->getHost();
                     $value = $prefix . $value;
                 }
-                //                $value = $this->getImagePath($value);
                 break;
         }
 
@@ -995,10 +1013,12 @@ class OpenGraph
     public function prepareFieldsValues($fields)
     {
         if(!$fields) return $fields;
+
         foreach ($fields as $key=>&$field) {
             $field = $this->prepareFieldsValue($key, $field);
         }
         unset($field);
+
         return $fields;
     }
 }
