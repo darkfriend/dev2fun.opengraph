@@ -6,27 +6,29 @@
  */
 ?>
 <table class="adm-detail-content-table edit-table">
-    <?foreach ($arFields as $arField) { ?>
-        <? switch ($arField) {
+    <?php foreach ($arFields as $arField) { ?>
+        <?php switch ($arField) {
             case 'url' :
             case 'site_name' :
             case 'image:type' :
             case 'image:width' :
-            case 'image:height' : break;
+            case 'image:height' :
+                break;
             case 'description' : ?>
                 <tr class="adm-detail-valign-top">
-                    <td width="40%" class="adm-detail-content-cell-l">og:<?=$arField?></td>
+                    <td width="40%" class="adm-detail-content-cell-l">og:<?= $arField ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
-                        <textarea name="DEV2FUN_OPENGRAPH[<?=$arField?>]" cols="55" rows="3" style="width:90%"><?= htmlspecialcharsback($arOpenGraph[$arField])?></textarea>
+                        <textarea name="DEV2FUN_OPENGRAPH[<?= $arField ?>]" cols="55" rows="3"
+                                  style="width:90%"><?= htmlspecialcharsback($arOpenGraph[$arField]) ?></textarea>
                     </td>
                 </tr>
-                <? break; ?>
-            <? case 'image' : ?>
+                <?php break; ?>
+            <?php case 'image' : ?>
                 <tr class="adm-detail-file-row">
-                    <td width="40%" class="adm-detail-valign-top adm-detail-content-cell-l">og:<?=$arField?></td>
+                    <td width="40%" class="adm-detail-valign-top adm-detail-content-cell-l">og:<?= $arField ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
-                        <?if (class_exists('\Bitrix\Main\UI\FileInput', true)) {
-                            echo \Bitrix\Main\UI\FileInput::createInstance(array(
+                        <?php if (class_exists('\Bitrix\Main\UI\FileInput', true)) {
+                            echo \Bitrix\Main\UI\FileInput::createInstance([
                                 "name" => "OG_IMAGE",
                                 "description" => true,
                                 "upload" => true,
@@ -35,11 +37,13 @@
                                 "fileDialog" => true,
                                 "cloud" => true,
                                 "delete" => true,
-                                "maxCount" => 1
-                            ))->show($arOpenGraph[$arField] > 0 ? $arOpenGraph[$arField]: 0);
+                                "maxCount" => 1,
+                            ])->show($arOpenGraph[$arField] > 0 ? $arOpenGraph[$arField] : 0);
                         } else {
-                            echo CFileInput::Show("OG_IMAGE", ($arOpenGraph[$arField] > 0 && !$bCopy? $arOpenGraph[$arField] : 0),
-                                array(
+                            echo CFileInput::Show(
+                                "OG_IMAGE",
+                                ($arOpenGraph[$arField] > 0 && !$bCopy ? $arOpenGraph[$arField] : 0),
+                                [
                                     "IMAGE" => "Y",
                                     "PATH" => "Y",
                                     "FILE_SIZE" => "Y",
@@ -49,28 +53,30 @@
 //                                        "W" => COption::GetOptionString("iblock", "detail_image_size"),
 //                                        "H" => COption::GetOptionString("iblock", "detail_image_size"),
 //                                    ),
-                                ), array(
+                                ],
+                                [
                                     'upload' => true,
                                     'medialib' => true,
                                     'file_dialog' => true,
                                     'cloud' => true,
                                     'del' => true,
                                     'description' => true,
-                                )
+                                ]
                             );
-                        }?>
+                        } ?>
                     </td>
                 </tr>
-                <? break; ?>
-            <? default : ?>
+                <?php break; ?>
+            <?php default : ?>
                 <tr class="adm-detail-valign-top">
-                    <td width="40%" class="adm-detail-content-cell-l">og:<?=$arField?></td>
+                    <td width="40%" class="adm-detail-content-cell-l">og:<?= $arField ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
-                        <input type="text" name="DEV2FUN_OPENGRAPH[<?=$arField?>]" value="<?=$arOpenGraph[$arField]?>">
+                        <input type="text" name="DEV2FUN_OPENGRAPH[<?= $arField ?>]"
+                               value="<?= $arOpenGraph[$arField] ?>">
                     </td>
                 </tr>
-        <? } ?>
-    <? } ?>
+            <?php } ?>
+    <?php } ?>
 </table>
 
 

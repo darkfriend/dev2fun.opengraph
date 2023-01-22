@@ -1,8 +1,8 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
- * @version 1.4.1
+ * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.2
  */
 
 namespace Dev2fun\Module;
@@ -70,7 +70,7 @@ class OpenGraph
     /**
      * @param \CAdminTabControl $form
      */
-    public function AddAdminTab(&$form)
+    public static function AddAdminTab(&$form)
     {
         Loader::includeModule("dev2fun.opengraph");
         if (!OpenGraph::$_init && self::IsAddTab()) {
@@ -103,7 +103,7 @@ class OpenGraph
      * Event Handler on save element
      * @param array &$arFields
      */
-    public function saveElement(&$arFields)
+    public static function saveElement(&$arFields)
     {
         if (!empty($arFields["ID"])) {
             $obParser = new \CTextParser;

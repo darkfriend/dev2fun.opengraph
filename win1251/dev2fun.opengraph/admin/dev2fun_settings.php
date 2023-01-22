@@ -1,8 +1,8 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
- * @version 1.4.1
+ * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.2
  * @global CUser $USER
  * @global CMain $APPLICATION
  */
@@ -178,7 +178,7 @@ if (empty($arSettingResize)) {
         'HEIGHT' => '',
     ];
 } else {
-    $arSettingResize = unserialize($arSettingResize);
+    $arSettingResize = unserialize($arSettingResize, ["allowed_classes" => false]);
 }
 if (!isset($arSettingResize['TYPE'])) {
     $arSettingResize['TYPE'] = BX_RESIZE_IMAGE_PROPORTIONAL;
@@ -194,7 +194,7 @@ $arSortable = Option::get(dev2funModuleOpenGraphClass::$module_id, 'SORTABLE');
 if (!$arSortable) {
     $arSortable = array_keys($arSortableDefault);
 } else {
-    $arSortable = unserialize($arSortable);
+    $arSortable = unserialize($arSortable, ["allowed_classes" => false]);
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . BX_ROOT . "/modules/main/include/prolog_admin_after.php");
@@ -223,11 +223,11 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
     <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/objects.grid.responsive.min.css">
     <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/objects.containers.min.css">
     <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/components.tables.min.css">
-    <form method="POST" action="?action=save&lang=<? echo LANGUAGE_ID ?>&<?= $tabControl->ActiveTabParam() ?>"
+    <form method="POST" action="?action=save&lang=<?php echo LANGUAGE_ID ?>&<?= $tabControl->ActiveTabParam() ?>"
           enctype="multipart/form-data" name="editform">
         <?= bitrix_sessid_post() ?>
         <input type="hidden" name="lang" value="<?= LANG ?>">
-        <?
+        <?php
         $tabControl->Begin();
         $tabControl->BeginNextTab();
 
@@ -582,9 +582,9 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     <td>
                                         <div class="sort_container">
                                             <ul id="sort_items" class="sort_list" data-input="sortableOpenGraph">
-                                                <? foreach ($arSortable as $sort) { ?>
+                                                <?php foreach ($arSortable as $sort) { ?>
                                                     <li data-id="<?= $sort ?>"><?= $arSortableDefault[$sort] ?></li>
-                                                <? } ?>
+                                                <?php } ?>
                                             </ul>
                                             <input type="hidden" value="<?= implode(',', $arSortable) ?>"
                                                    id="sortableOpenGraph"

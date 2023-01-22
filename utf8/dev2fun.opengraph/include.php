@@ -1,8 +1,8 @@
 <?php
 /**
  * @author dev2fun <darkfriend>
- * @copyright (c) 2019-2022, darkfriend <hi@darkfriend.ru>
- * @version 1.4.0
+ * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
+ * @version 1.4.2
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -150,7 +150,7 @@ class dev2funModuleOpenGraphClass
         if ($sFields) {
             $sFields = unserialize($sFields, ['allowed_classes' => false]);
         } else {
-            $sFields = array();
+            $sFields = [];
         }
         if ($incDefault) {
             $sFields = array_merge(self::$arReqSettings, $sFields);
@@ -205,7 +205,7 @@ class dev2funModuleOpenGraphClass
         if ($pages) {
             $pages = unserialize($pages, ['allowed_classes' => false]);
         } else {
-            $pages = array();
+            $pages = [];
         }
         return $pages;
     }
@@ -236,7 +236,7 @@ class dev2funModuleOpenGraphClass
         if ($data) {
             $data = unserialize($data, ['allowed_classes' => false]);
         } else {
-            $data = array();
+            $data = [];
         }
         return $data;
     }
@@ -251,7 +251,7 @@ class dev2funModuleOpenGraphClass
         if ($data) {
             $data = unserialize($data, ['allowed_classes' => false]);
         } else {
-            $data = array();
+            $data = [];
         }
         return $data;
     }
@@ -457,16 +457,15 @@ class dev2funModuleOpenGraphClass
     public static function ShowThanksNotice()
     {
         \CAdminNotify::Add([
-            //			'MESSAGE' => \Bitrix\Main\Localization\Loc::getMessage('D2F_OPENGRAPH_DONATE_MESSAGE',['#URL#'=>$APPLICATION->GetCurUri('tabControl_active_tab=donate')]),
             'MESSAGE' => Loc::getMessage('D2F_OPENGRAPH_DONATE_MESSAGE', ['#URL#' => '/bitrix/admin/dev2fun_opengraph_manager.php?action=settings&tabControl_active_tab=donate']),
             'TAG' => 'dev2fun_opengraph_update',
             'MODULE_ID' => 'dev2fun.opengraph',
         ]);
     }
 
-    public function DoBuildGlobalMenu(&$aGlobalMenu, &$aModuleMenu)
+    public static function DoBuildGlobalMenu(&$aGlobalMenu, &$aModuleMenu)
     {
-        $aModuleMenu[] = array(
+        $aModuleMenu[] = [
             "parent_menu" => "global_menu_settings",
             "icon" => "dev2fun_admin_icon",
             "page_icon" => "dev2fun_admin_icon",
@@ -476,7 +475,7 @@ class dev2funModuleOpenGraphClass
             "url" => "/bitrix/admin/dev2fun_opengraph_manager.php?action=settings",
             "items_id" => "menu_dev2fun_opengraph",
             "section" => "dev2fun_opengraph",
-            "more_url" => array(),
+            "more_url" => [],
             // "items" => array(
             //     array(
             //         "text" => GetMessage("SUB_SETINGS_MENU_TEXT"),
@@ -487,6 +486,6 @@ class dev2funModuleOpenGraphClass
             //         "page_icon" => "default_page_icon",
             //     ),
             // )
-        );
+        ];
     }
 }

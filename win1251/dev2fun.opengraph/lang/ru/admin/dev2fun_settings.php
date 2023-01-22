@@ -1,7 +1,7 @@
-<?
+<?php
 /**
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.3.7
+ * @version 1.4.2
  */
 $MESS["SEC_MAIN_TAB"] = "Настройки OpenGraph";
 $MESS["SEC_MAIN_TAB_TITLE"] = "Настройки OpenGraph";
