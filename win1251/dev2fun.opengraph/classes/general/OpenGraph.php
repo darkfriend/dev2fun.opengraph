@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
- * @version 1.4.2
+ * @version 1.4.3
  */
 
 namespace Dev2fun\Module;
@@ -221,7 +221,7 @@ class OpenGraph
      * Event Handler on save section
      * @param array &$arFields
      */
-    public function saveSection(&$arFields)
+    public static function saveSection(&$arFields)
     {
         if (!empty($arFields["ID"])) {
             $obParser = new \CTextParser;
@@ -846,7 +846,7 @@ class OpenGraph
      * Event Handler on delete element
      * @param array $arFields
      */
-    public function deleteElement($arFields)
+    public static function deleteElement($arFields)
     {
         if (!empty($arFields['ID'])) {
             $arRows = OpenGraphTable::getList(['filter' => [
@@ -865,7 +865,7 @@ class OpenGraph
      * Event Handler on delete section
      * @param array $arFields
      */
-    public function deleteSection($arFields)
+    public static function deleteSection($arFields)
     {
         if (!empty($arFields['ID'])) {
             $arRows = OpenGraphTable::getList(['filter' => [
