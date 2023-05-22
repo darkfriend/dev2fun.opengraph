@@ -195,14 +195,23 @@ class OpenGraph
                         if (empty($file['tmp_name'])) {
                             $file = \CFile::MakeFileArray($file);
                         } elseif (!file_exists($file['tmp_name'])) {
-                            $upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
-                            $absPath = $_SERVER["DOCUMENT_ROOT"] . "/" . $upload_dir . "/tmp";
-                            if (!empty($file['tmp_name']) && !strpos($file['tmp_name'], $absPath)) {
-                                $file['tmp_name'] = $absPath . $file['tmp_name'];
+                            if (defined('BX_TEMPORARY_FILES_DIRECTORY') && mb_strpos($file['tmp_name'], \BX_TEMPORARY_FILES_DIRECTORY) === 0) {
+                                $tmpPath = \COption::GetOptionString('main', 'bx_tmp_download', '/bx_tmp_download/');
+                                $file['tmp_name'] = $tmpPath.ltrim(mb_substr($file['tmp_name'], mb_strlen(\BX_TEMPORARY_FILES_DIRECTORY)), '/');
+                            } else {
+                                $upload_dir = \COption::GetOptionString("main", "upload_dir", "upload");
+                                $absPath = "{$_SERVER["DOCUMENT_ROOT"]}/{$upload_dir}/tmp";
+                                if (!empty($file['tmp_name']) && !strpos($file['tmp_name'], $absPath)) {
+                                    $file['tmp_name'] = $absPath . $file['tmp_name'];
+                                }
                             }
                         }
-                        $fileID = \CFile::SaveFile($file, 'dev2fun_opengraph', true);
-                        if ($fileID) $reqFields['image'] = $fileID;
+                        if (!empty($file['tmp_name'])) {
+                            $fileID = \CFile::SaveFile($file, 'dev2fun_opengraph', true);
+                            if ($fileID) {
+                                $reqFields['image'] = $fileID;
+                            }
+                        }
                     }
                 }
             }
