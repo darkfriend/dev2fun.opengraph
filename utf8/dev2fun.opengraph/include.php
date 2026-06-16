@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
- * @version 1.4.2
+ * @version 1.4.4
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -279,7 +279,7 @@ class dev2funModuleOpenGraphClass
             ExecuteModuleEventEx($arEvent, array(&$arSettings, &$cache_id, &$cachePath));
         }
 
-        if ($USER->IsAdmin() && !empty($_REQUEST['clear_cache'])) {
+        if ($USER->IsAdmin() && !empty($_REQUEST['clear_cache']) && check_bitrix_sessid()) {
             $obCache->Clean($cache_id, $cachePath);
         }
 
@@ -302,7 +302,8 @@ class dev2funModuleOpenGraphClass
             }
             if ($arExcluded) {
                 foreach ($arExcluded as $exc) {
-                    if (preg_match($exc, $curPage)) {
+                    $pattern = '#' . preg_quote((string)$exc, '#') . '#';
+                    if (@preg_match($pattern, $curPage)) {
                         $obCache->EndDataCache(0);
                         return;
                     }
@@ -434,8 +435,14 @@ class dev2funModuleOpenGraphClass
      */
     public function getHost()
     {
-        if (!$this->httpHost)
-            $this->httpHost = preg_replace('#(\:\d+)#', '', $_SERVER['HTTP_HOST']);
+        if (!$this->httpHost) {
+            $host = (string)\Bitrix\Main\Context::getCurrent()->getServer()->get('SERVER_NAME');
+            if (!$host) {
+                $host = (string)$_SERVER['HTTP_HOST'];
+            }
+            $host = preg_replace('#(\:\d+)#', '', $host);
+            $this->httpHost = preg_replace('#[^a-zA-Z0-9\.\-]#', '', $host);
+        }
         return $this->httpHost;
     }
 

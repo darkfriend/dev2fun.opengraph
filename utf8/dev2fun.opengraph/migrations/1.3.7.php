@@ -13,6 +13,11 @@
 
 include($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
+global $USER;
+if (!is_object($USER) || !$USER->IsAdmin() || !check_bitrix_sessid()) {
+    die();
+}
+
 $moduleID = 'dev2fun.opengraph';
 
 \Bitrix\Main\Loader::includeModule($moduleID);

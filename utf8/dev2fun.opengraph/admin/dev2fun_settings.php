@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
- * @version 1.4.2
+ * @version 1.4.4
  * @global CUser $USER
  * @global CMain $APPLICATION
  */
@@ -251,7 +251,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     <tr>
                                         <td>
                                             <label>og:</label>
-                                            <input name="FIELDS[og][n<?= $key ?>]" value="<?= $field ?>" size="30"
+                                            <input name="FIELDS[og][n<?= (int)$key ?>]" value="<?= htmlspecialcharsbx($field) ?>" size="30"
                                                    type="text"><br>
                                         </td>
                                     </tr>
@@ -296,7 +296,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     ?>
                                     <tr>
                                         <td>
-                                            <input name="FIELDS_ADDIT[n<?= $key ?>]" value="<?= $field ?>" size="30"
+                                            <input name="FIELDS_ADDIT[n<?= (int)$key ?>]" value="<?= htmlspecialcharsbx($field) ?>" size="30"
                                                    type="text"
                                                    placeholder="<?= Loc::getMessage("LABEL_SETTING_OG_ADDITIONAL_PLACEHOLDER"); ?>">
                                         </td>
@@ -360,7 +360,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     <tr>
                                         <td>
                                             <label><?= $serverUrl ?></label>
-                                            <input name="EXCLUDE_PAGE[n<?= $key ?>]" value="<?= $page ?>" size="30"
+                                            <input name="EXCLUDE_PAGE[n<?= (int)$key ?>]" value="<?= htmlspecialcharsbx($page) ?>" size="30"
                                                    type="text">
                                         </td>
                                     </tr>
@@ -583,10 +583,10 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                         <div class="sort_container">
                                             <ul id="sort_items" class="sort_list" data-input="sortableOpenGraph">
                                                 <?php foreach ($arSortable as $sort) { ?>
-                                                    <li data-id="<?= $sort ?>"><?= $arSortableDefault[$sort] ?></li>
+                                                    <li data-id="<?= htmlspecialcharsbx($sort) ?>"><?= htmlspecialcharsbx($arSortableDefault[$sort]) ?></li>
                                                 <?php } ?>
                                             </ul>
-                                            <input type="hidden" value="<?= implode(',', $arSortable) ?>"
+                                            <input type="hidden" value="<?= htmlspecialcharsbx(implode(',', $arSortable)) ?>"
                                                    id="sortableOpenGraph"
                                                    name="sortableOpenGraph">
                                         </div>
@@ -704,14 +704,14 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                     <td>
                                         <input type="text" id="LABEL_SETTING_OG_RESIZE_WIDTH"
                                                name="OG_SETTINGS_RESIZE[WIDTH]"
-                                               value="<?= isset($arSettingResize['WIDTH']) ? $arSettingResize['WIDTH'] : '' ?>">
+                                               value="<?= isset($arSettingResize['WIDTH']) ? (int)$arSettingResize['WIDTH'] : '' ?>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <input type="text" id="LABEL_SETTING_OG_RESIZE_HEIGHT"
                                                name="OG_SETTINGS_RESIZE[HEIGHT]"
-                                               value="<?= isset($arSettingResize['HEIGHT']) ? $arSettingResize['HEIGHT'] : '' ?>">
+                                               value="<?= isset($arSettingResize['HEIGHT']) ? (int)$arSettingResize['HEIGHT'] : '' ?>">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -773,7 +773,7 @@ $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
                                 <tr>
                                     <td>
                                         <input type="text" name="OGSETTINGS[CACHE_TIME]"
-                                               value="<?= $settingFields['CACHE_TIME'] ?>"
+                                               value="<?= (int)$settingFields['CACHE_TIME'] ?>"
                                                required min="100">
                                     </td>
                                 </tr>
