@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2017, darkfriend <hi@darkfriend.ru>
- * @version 1.1.0
+ * @version 1.4.4
  */
 ?>
 <table class="adm-detail-content-table edit-table">
@@ -16,16 +16,16 @@
                 break;
             case 'description' : ?>
                 <tr class="adm-detail-valign-top">
-                    <td width="40%" class="adm-detail-content-cell-l">og:<?= $arField ?></td>
+                    <td width="40%" class="adm-detail-content-cell-l">og:<?= htmlspecialcharsbx($arField) ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
-                        <textarea name="DEV2FUN_OPENGRAPH[<?= $arField ?>]" cols="55" rows="3"
-                                  style="width:90%"><?= htmlspecialcharsback($arOpenGraph[$arField]) ?></textarea>
+                        <textarea name="DEV2FUN_OPENGRAPH[<?= htmlspecialcharsbx($arField) ?>]" cols="55" rows="3"
+                                  style="width:90%"><?= htmlspecialcharsbx($arOpenGraph[$arField]) ?></textarea>
                     </td>
                 </tr>
                 <?php break; ?>
             <?php case 'image' : ?>
                 <tr class="adm-detail-file-row">
-                    <td width="40%" class="adm-detail-valign-top adm-detail-content-cell-l">og:<?= $arField ?></td>
+                    <td width="40%" class="adm-detail-valign-top adm-detail-content-cell-l">og:<?= htmlspecialcharsbx($arField) ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
                         <?php if (class_exists('\Bitrix\Main\UI\FileInput', true)) {
                             echo \Bitrix\Main\UI\FileInput::createInstance([
@@ -69,10 +69,10 @@
                 <?php break; ?>
             <?php default : ?>
                 <tr class="adm-detail-valign-top">
-                    <td width="40%" class="adm-detail-content-cell-l">og:<?= $arField ?></td>
+                    <td width="40%" class="adm-detail-content-cell-l">og:<?= htmlspecialcharsbx($arField) ?></td>
                     <td width="60%" class="adm-detail-content-cell-r">
-                        <input type="text" name="DEV2FUN_OPENGRAPH[<?= $arField ?>]"
-                               value="<?= $arOpenGraph[$arField] ?>">
+                        <input type="text" name="DEV2FUN_OPENGRAPH[<?= htmlspecialcharsbx($arField) ?>]"
+                               value="<?= htmlspecialcharsbx($arOpenGraph[$arField]) ?>">
                     </td>
                 </tr>
             <?php } ?>

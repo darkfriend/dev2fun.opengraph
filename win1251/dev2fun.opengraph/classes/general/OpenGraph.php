@@ -2,7 +2,7 @@
 /**
  * @author dev2fun <darkfriend>
  * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
- * @version 1.4.3
+ * @version 1.4.4
  */
 
 namespace Dev2fun\Module;
@@ -798,7 +798,7 @@ class OpenGraph
         if ($ogData) {
             foreach ($ogData as $ogKey => $ogValue) {
                 if (!empty($ogValue)) {
-                    $arStr[] = '<meta property="' . $ogKey . '" content="' . $ogValue . '"/>';
+                    $arStr[] = '<meta property="' . htmlspecialcharsbx($ogKey) . '" content="' . htmlspecialcharsbx($ogValue) . '"/>';
                 }
             }
         }
