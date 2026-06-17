@@ -268,7 +268,7 @@ class dev2funModuleOpenGraphClass
 
         $obCache = new CPHPCache;
         $arSettings = self::getSettingFields();
-        $domain = $_SERVER['HTTP_HOST'];
+        $domain = self::getInstance()->getHost();
         if (!$domain) {
             $domain = Context::getCurrent()->getSite();
         }
@@ -407,7 +407,7 @@ class dev2funModuleOpenGraphClass
     {
         $cachePath = '/dev2fun.opengraph/';
         if (!$all) {
-            $domain = $_SERVER['HTTP_HOST'];
+            $domain = self::getInstance()->getHost();
             if (!$domain) {
                 $domain = SITE_ID;
             }
@@ -431,11 +431,11 @@ class dev2funModuleOpenGraphClass
 
     /**
      * Get domain
-     * @return mixed
+     * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
-        if (!$this->httpHost) {
+        if ($this->httpHost === null) {
             $host = (string)\Bitrix\Main\Context::getCurrent()->getServer()->get('SERVER_NAME');
             if (!$host) {
                 $host = (string)$_SERVER['HTTP_HOST'];

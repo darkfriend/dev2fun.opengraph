@@ -217,12 +217,12 @@ if (!empty($_REQUEST['cache_success'])) {
 }
 $serverUrl = dev2funModuleOpenGraphClass::getInstance()->getUrl('/');
 ?>
-    <link rel="stylesheet" href="<?= '/bitrix/css/' . dev2funModuleOpenGraphClass::$module_id . '/opengraph.css' ?>">
-    <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/components.cards.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/objects.grid.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/objects.grid.responsive.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/objects.containers.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/blaze@4.0.0-6/scss/dist/components.tables.min.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/opengraph.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/blaze/components.cards.min.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/blaze/objects.grid.min.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/blaze/objects.grid.responsive.min.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/blaze/objects.containers.min.css">
+    <link rel="stylesheet" href="/bitrix/css/<?= dev2funModuleOpenGraphClass::$module_id ?>/blaze/components.tables.min.css">
     <form method="POST" action="?action=save&lang=<?php echo LANGUAGE_ID ?>&<?= $tabControl->ActiveTabParam() ?>"
           enctype="multipart/form-data" name="editform">
         <?= bitrix_sessid_post() ?>

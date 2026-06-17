@@ -2,8 +2,8 @@
 /**
  * Install
  * @author dev2fun (darkfriend)
- * @copyright (c) 2019-2023, darkfriend <hi@darkfriend.ru>
- * @version 1.4.2
+ * @copyright (c) 2019-2023, darkfriend
+ * @version 1.4.4
  */
 IncludeModuleLangFile(__FILE__);
 
@@ -136,7 +136,6 @@ class dev2fun_opengraph extends CModule
 
         if (!CopyDirFiles($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/" . $this->MODULE_ID . "/install/css", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/css/" . $this->MODULE_ID, true, true)) {
             throw new Exception(Loc::getMessage("ERRORS_CREATE_DIR", ['#DIR#' => __DIR__ . "/install/css"]));
-            return false;
         }
 
         return true;
